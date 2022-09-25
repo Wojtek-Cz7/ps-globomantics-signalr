@@ -42,13 +42,19 @@ const submitBid = (auctionId) => {
             'Content-Type': 'application/json'
         }
     });
-    location.reload();
-
-    // here we want to call NotifyNewBid method ON THE HUB
-
-    connection.invoke("NotifyNewBid", {
-        auctionId: parseInt(auctionId),
-        newBid: parseInt(bid)
-    }) // serialization is done autmatically by SignalR
+    if (connection.state !== signalR.HubConnectionState.Connected)
+        location.reload();
+    connection.invoke("NotifyNewBid", { auctionId: parseInt(auctionId), newBid: parseInt(bid) });
 }
 
+const submitAuction = () => {
+    const itemName = document.getElementById("add-itemname").value;
+    const currentBid = document.getElementById("add-currentbid").value;
+    fetch("/auction", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ itemName, currentBid })
+    });
+}
