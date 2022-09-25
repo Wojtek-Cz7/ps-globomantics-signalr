@@ -34,6 +34,6 @@ app.MapPost("auction/{auctionId}/newbid", (int auctionId, int currentBid, IAucti
     auctionRepo.NewBid(auctionId, currentBid);
 });
 
-app.MapHub<AuctionHub>("/actionhub");          // connection to the hub is available at /actionhub endpoint
+app.MapHub<AuctionHub>("/auctionhub");          // connection to the hub is available at /auctionhub endpoint
 
 app.Run();
