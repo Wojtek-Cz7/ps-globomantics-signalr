@@ -3,7 +3,7 @@
         .withUrl("/auctionhub")
         .build();
 
-    connection.start().catch(err => connection.error(err.ToString()));
+    connection.start().catch(err => console.error(err.ToString()));
 
     return connection;
 
@@ -20,4 +20,12 @@ const submitBid = (auctionId) => {
         }
     });
     location.reload();
+
+    // here we want to call NotifyNewBid method ON THE HUB
+
+    connection.invoke("NotifyNewBid", {
+        auctionId: parseInt(auctionId),
+        newBid: parseInt(bid)
+    }) // serialization is done autmatically by SignalR
 }
+
